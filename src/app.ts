@@ -1,9 +1,12 @@
 import * as express from "express";
 import Routes from './routes/routes';
+import * as bodyParser from 'body-parser'
 
 // create and setup express app
 const app = express();
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 Routes(app);
 
@@ -26,3 +29,5 @@ app.use(function (err, req, res, next) {
 app.listen(3000, () => {
   console.log("Express Server Started");
 });
+
+export default app;
