@@ -22,4 +22,14 @@ describe('Matrix', () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toEqual(`1,2,3\n4,5,6\n7,8,9\n`);
   });
+
+  it('POST /invert', async () => {
+    const buffer = Buffer.from(`1,2,3\n4,5,6\n7,8,9`);
+
+    const response = await request(app)
+      .post('/invert')
+      .attach('file', buffer, 'matrix.csv');
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toEqual(`1,4,7\n2,5,8\n3,6,9\n`);
+  });
 });

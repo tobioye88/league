@@ -11,7 +11,18 @@ const Routes = (app: Express) => {
   });
 
   app.post("/echo", upload.single('file'), async (req: Request, res: Response) => {
+    if (!req.file) {
+      res.status(400).json({ message: "Invalid file" });
+    }
     const result = await MatrixService.echo(req.file.path);
+    res.send(result);
+  });
+
+  app.post("/invert", upload.single('file'), async (req: Request, res: Response) => {
+    if (!req.file) {
+      res.status(400).json({ message: "Invalid file" });
+    }
+    const result = await MatrixService.invert(req.file.path);
     res.send(result);
   });
 }
