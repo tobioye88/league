@@ -19,7 +19,7 @@ export default class MatrixService {
       } catch (e) {
         reject('');
       }
-    })
+    });
   }
 
   public static async invert(path: string): Promise<string> {
@@ -57,5 +57,24 @@ export default class MatrixService {
         reject('');
       }
     })
+  }
+
+  public static async flatten(path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let result = [];
+        // open uploaded file
+        csv.parseFile(path)
+          .on("data", function (data) {
+            result.push(data.join(','));
+          })
+          .on("end", function () {
+            fs.unlinkSync(path);   // remove temp file
+            resolve(result.join(','));
+          });
+      } catch (e) {
+        reject('');
+      }
+    });
   }
 }

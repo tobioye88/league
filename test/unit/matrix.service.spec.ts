@@ -41,4 +41,12 @@ describe('MatrixService', () => {
     const result = await MatrixService.invert(testFile);
     expect(result).toEqual(``);
   });
+
+  it('should return an flattened string : flatten', async () => {
+    const path = __dirname + '/../matrix-empty.csv';
+    const testFile = __dirname + '/../../tmp/csv/temp-matrix.csv';
+    fs.copyFile(path, testFile, () => { });
+    const result = await MatrixService.flatten(testFile);
+    expect(result).toEqual(`1,2,3,4,5,6,7,8,9`);
+  });
 });
