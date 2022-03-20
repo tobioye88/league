@@ -24,6 +24,7 @@ export default class MatrixService {
 
   public static async invert(path: string): Promise<string> {
     const invertMatrix = (data: string[][]): string => {
+      if(!data || !data.length) return '';
       const max = data[0].length;
       let i = 0;
       let j = 0;
