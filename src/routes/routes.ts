@@ -1,6 +1,7 @@
 import { Express, Request, Response } from 'express';
 import * as multer from 'multer';
 import MatrixService from '../services/matrix.service';
+import * as fs from 'fs';
 
 
 const upload = multer({ 
@@ -76,6 +77,7 @@ function validateFile(file: Express.Multer.File) {
     throw new Error("File not found");
   }
   if(!whitelist.includes(file.mimetype)){
+    fs.unlinkSync(file.path);
     throw new Error('File is not allowed');
   }
 }
