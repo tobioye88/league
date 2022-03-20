@@ -49,4 +49,12 @@ describe('MatrixService', () => {
     const result = await MatrixService.flatten(testFile);
     expect(result).toEqual(`1,2,3,4,5,6,7,8,9`);
   });
+
+  it('should return a sum of matrix : sum', async () => {
+    const path = __dirname + '/../matrix.csv';
+    const testFile = __dirname + '/../../tmp/csv/temp-matrix5.csv';
+    fs.copyFile(path, testFile, () => { });
+    const result = await MatrixService.sum(testFile);
+    expect(result).toEqual(45);
+  });
 });

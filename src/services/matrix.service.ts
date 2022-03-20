@@ -9,7 +9,7 @@ export default class MatrixService {
         let result = '';
         // open uploaded file
         csv.parseFile(path)
-          .on("data", function (data) {
+          .on("data", function (data: string[]) {
             result += data.join(',') + '\n';
           })
           .on("end", function () {
@@ -47,7 +47,7 @@ export default class MatrixService {
         let result = [];
         // open uploaded file
         csv.parseFile(path)
-          .on("data", function (data) {
+          .on("data", function (data: string[]) {
             result.push(data);
           })
           .on("end", function () {
@@ -66,7 +66,7 @@ export default class MatrixService {
         let result = [];
         // open uploaded file
         csv.parseFile(path)
-          .on("data", function (data) {
+          .on("data", function (data: string[]) {
             result.push(data.join(','));
           })
           .on("end", function () {
@@ -75,6 +75,25 @@ export default class MatrixService {
           });
       } catch (e) {
         reject('');
+      }
+    });
+  }
+
+  public static async sum(path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let result = 0;
+        // open uploaded file
+        csv.parseFile(path)
+          .on("data", function (data: string[]) {
+            result = data.map(el => Number(el)).reduce((total, el) => total + el, result);
+          })
+          .on("end", function () {
+            fs.unlinkSync(path);   // remove temp file
+            resolve(result + '');
+          });
+      } catch (e) {
+        reject('0');
       }
     });
   }

@@ -33,5 +33,13 @@ const Routes = (app: Express) => {
     const result = await MatrixService.flatten(req.file.path);
     res.send(result);
   });
+
+  app.post("/sum", upload.single('file'), async (req: Request, res: Response) => {
+    if (!req.file) {
+      res.status(400).json({ message: "Invalid file" });
+    }
+    const result = await MatrixService.sum(req.file.path);
+    res.send(result);
+  });
 }
 export default Routes;
