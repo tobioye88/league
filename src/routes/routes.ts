@@ -2,44 +2,81 @@ import { Express, Request, Response } from 'express';
 import * as multer from 'multer';
 import MatrixService from '../services/matrix.service';
 
-const upload = multer({ dest: 'tmp/csv/' });
+
+const upload = multer({ 
+  dest: 'tmp/csv/', 
+  limits: {
+    fileSize: 15_000_000,
+  },
+});
+const whitelist = [
+  'text/csv'
+]
 
 const Routes = (app: Express) => {
   // register routes
   app.get("/", async function (req: Request, res: Response) {
     res.json({ message: 'Hello world!' });
+    return;
   });
 
   app.post("/echo", upload.single('file'), async (req: Request, res: Response) => {
-    if (!req.file) {
-      res.status(400).json({ message: "Invalid file" });
+    try{
+      validateFile(req.file);
+      const result = await MatrixService.echo(req.file.path);
+      res.send(result);
+    } catch(e) {
+      res.status(400).json({ message: e.message });
     }
-    const result = await MatrixService.echo(req.file.path);
-    res.send(result);
   });
 
   app.post("/invert", upload.single('file'), async (req: Request, res: Response) => {
-    if (!req.file) {
-      res.status(400).json({ message: "Invalid file" });
+    try{
+      validateFile(req.file);
+      const result = await MatrixService.invert(req.file.path);
+      res.send(result);
+    } catch(e) {
+      res.status(400).json({ message: e.message });
     }
-    const result = await MatrixService.invert(req.file.path);
-    res.send(result);
   });
 
   app.post("/flatten", upload.single('file'), async (req: Request, res: Response) => {
-    if (!req.file) {
-      res.status(400).json({ message: "Invalid file" });
+    try{
+      validateFile(req.file);
+      const result = await MatrixService.flatten(req.file.path);
+      res.send(result);
+    } catch(e) {
+      res.status(400).json({ message: e.message });
     }
-    const result = await MatrixService.flatten(req.file.path);
-    res.send(result);
   });
 
   app.post("/sum", upload.single('file'), async (req: Request, res: Response) => {
-    if (!req.file) {
-      res.status(400).json({ message: "Invalid file" });
+    try{
+      validateFile(req.file);
+      const result = await MatrixService.sum(req.file.path);
+      res.send(result);
+    } catch(e) {
+      res.status(400).json({ message: e.message });
     }
-    const result = await MatrixService.sum(req.file.path);
-    res.send(result);
   });
+
+  app.post("/multiply", upload.single('file'), async (req: Request, res: Response) => {
+    try{
+      validateFile(req.file);
+      const result = await MatrixService.multiply(req.file.path);
+      res.send(result);
+    } catch(e) {
+      res.status(400).json({ message: e.message });
+    }
+  });
+}
+
+function validateFile(file: Express.Multer.File) {
+  if (!file) {
+    throw new Error("File not found");
+  }
+  if(!whitelist.includes(file.mimetype)){
+    throw new Error('File is not allowed');
+  }
 }
 export default Routes;

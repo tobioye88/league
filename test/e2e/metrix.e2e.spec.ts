@@ -52,4 +52,14 @@ describe('Matrix', () => {
     expect(response.statusCode).toEqual(200);
     expect(response.text).toEqual('45');
   });
+
+  it('POST /multiply', async () => {
+    const buffer = Buffer.from(`1,2,3\n4,5,6\n7,8,9`);
+
+    const response = await request(app)
+      .post('/multiply')
+      .attach('file', buffer, 'matrix.csv');
+    expect(response.statusCode).toEqual(200);
+    expect(response.text).toEqual('362880');
+  });
 });

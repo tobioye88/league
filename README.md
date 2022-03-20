@@ -14,6 +14,26 @@ npm run test
 
 APPLICATION RUNNING ON PORT:3000
 
+### Documentation
+#### Echo
+curl --location --request POST 'localhost:3000/echo' \
+--form 'file=@"/Users/tobioye/Downloads/matrix.csv"'
+
+#### Invert
+curl --location --request POST 'localhost:3000/invert' \
+--form 'file=@"/Users/tobioye/Downloads/matrix.csv"'
+
+#### Flatten
+curl --location --request POST 'localhost:3000/flatten' \
+--form 'file=@"/Users/tobioye/Downloads/matrix.csv"'
+
+#### Sum
+curl --location --request POST 'localhost:3000/sum' \
+--form 'file=@"/Users/tobioye/Downloads/matrix.csv"'
+
+#### Multiply
+curl --location --request POST 'localhost:3000/multiply' \
+--form 'file=@"/Users/tobioye/Downloads/matrix.csv"'
 
 
 # League Backend Challenge

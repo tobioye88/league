@@ -97,4 +97,23 @@ export default class MatrixService {
       }
     });
   }
+
+  public static async multiply(path: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        let result = 1;
+        // open uploaded file
+        csv.parseFile(path)
+          .on("data", function (data: string[]) {
+            result = data.map(el => Number(el)).reduce((total, el) => total * el, result);
+          })
+          .on("end", function () {
+            fs.unlinkSync(path);   // remove temp file
+            resolve(result + '');
+          });
+      } catch (e) {
+        reject('0');
+      }
+    });
+  }
 }

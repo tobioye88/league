@@ -55,6 +55,14 @@ describe('MatrixService', () => {
     const testFile = __dirname + '/../../tmp/csv/temp-matrix5.csv';
     fs.copyFile(path, testFile, () => { });
     const result = await MatrixService.sum(testFile);
-    expect(result).toEqual(45);
+    expect(result).toEqual('45');
+  });
+
+  it('should return a multiple of matrix : multiply', async () => {
+    const path = __dirname + '/../matrix.csv';
+    const testFile = __dirname + '/../../tmp/csv/temp-matrix5.csv';
+    fs.copyFile(path, testFile, () => { });
+    const result = await MatrixService.multiply(testFile);
+    expect(result).toEqual('362880');
   });
 });
